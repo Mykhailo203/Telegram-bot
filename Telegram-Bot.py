@@ -87,16 +87,16 @@ def buy_pizza(update, context):
 
     buy_pizza = update.message.text
     buy_pizza = buy_pizza.split()
-    pizza = dict()
+    pizza = list()
     pizza['pizza'] = buy_pizza[1]
     pizza['size'] = buy_pizza[2]
     pizza['price'] = buy_pizza[3]
 
 
-    with open(pizza_quantity, 'r', encoding='UTF8',) as pq1:
+    with open('pizza_quantity.csv', 'r', encoding='UTF8',) as pq1:
         reader = pizzas
         for i in reader:
-            if i.index(buy_pizza[1]) and i.index(buy_pizza[2]):
+            if buy_pizza in pizzas:
                 message1 = '''Піцца успішно замовлена, чекайте на дзвінок!'''
 
                 chat = update.effective_chat
@@ -127,22 +127,6 @@ def buy_pizza(update, context):
                 context.bot.send_message(chat_id=chat.id, text = message) 
 
 
-    
-
-
-def films_list(update, context):
-    global file_name, headers
-
-    message = 'Фільми в прокаті:'
-
-    with open(file_name, 'r', encoding='UTF8') as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            film = "|{:<}|{:<}|{:>}|".format(row['film'], row['category'], row['age'])
-            print(film)
-            message += "\n" + film
-
-
     chat = update.effective_chat
     context.bot.send_message(chat_id = chat.id, text = message) 
 
@@ -155,9 +139,7 @@ dispatcher = updater.dispatcher
 #створюємо обробники подій (команд)
 dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(CommandHandler("help", bot_commands))
-dispatcher.add_handler(CommandHandler("posters_list", films_list))
 dispatcher.add_handler(CommandHandler("buy_pizza", buy_pizza))
-#dispatcher.add_handler(CommandHandler("posters_remove", films_delete))
 
 #все, що не потрапляє в команди бота
 dispatcher.add_handler(MessageHandler(Filters.all, error_input))
