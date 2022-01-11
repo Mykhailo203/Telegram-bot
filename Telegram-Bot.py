@@ -87,7 +87,7 @@ def buy_pizza(update, context):
 
     buy_pizza = update.message.text
     buy_pizza = buy_pizza.split()
-    pizza = list()
+    pizza = dict()
     pizza['pizza'] = buy_pizza[1]
     pizza['size'] = buy_pizza[2]
     pizza['price'] = buy_pizza[3]
@@ -96,7 +96,7 @@ def buy_pizza(update, context):
     with open('pizza_quantity.csv', 'r', encoding='UTF8',) as pq1:
         reader = pizzas
         for i in reader:
-            if buy_pizza in pizzas:
+            if buy_pizza[1] and buy_pizza[2] in pizzas:
                 message1 = '''Піцца успішно замовлена, чекайте на дзвінок!'''
 
                 chat = update.effective_chat
